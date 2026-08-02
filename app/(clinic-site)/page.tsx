@@ -7,10 +7,11 @@ import { TestimonialsSection } from "./components/TestimonialsSection";
 import { LocationSection } from "./components/LocationSection";
 import { CTASection } from "./components/CTASection";
 import { Footer } from "./components/Footer";
+import { FloatingChatbotWidget } from "./components/FloatingChatbotWidget";
 
 export default function DemoClinicHomePage() {
   return (
-    <main className="min-h-screen bg-background">
+    <main className="min-h-screen bg-background relative">
       <HeroSection />
       <ServicesSection />
       <DoctorSection />
@@ -19,6 +20,7 @@ export default function DemoClinicHomePage() {
       <LocationSection />
       <CTASection />
       <Footer />
+      <FloatingChatbotWidget />
     </main>
   );
 }
