@@ -19,7 +19,7 @@ describe("lib/booking/stateMachine", () => {
     const result = processIncomingMessage("AWAITING_SERVICE", {}, "1");
     expect(result.nextStep).toBe("AWAITING_DATE");
     expect(result.updatedContext.service).toBe("Teeth Cleaning");
-    expect(result.replyMessage).toContain("preferred date");
+    expect(result.replyMessage).toContain("Selected service: Teeth Cleaning");
   });
 
   it("advances from AWAITING_DATE to AWAITING_TIME when 'tomorrow' provided", () => {
@@ -33,15 +33,15 @@ describe("lib/booking/stateMachine", () => {
     expect(result.replyMessage).toContain("time slot");
   });
 
-  it("advances from AWAITING_TIME to AWAITING_NAME", () => {
+  it("advances from AWAITING_TIME to AWAITING_NAME with flexible time input '11 am'", () => {
     const result = processIncomingMessage(
       "AWAITING_TIME",
       { service: "Teeth Cleaning", date: "2026-09-10" },
-      "10:30 AM"
+      "11 am"
     );
     expect(result.nextStep).toBe("AWAITING_NAME");
-    expect(result.updatedContext.time).toBe("10:30 AM");
-    expect(result.replyMessage).toContain("full name");
+    expect(result.updatedContext.time).toBe("11:00 AM");
+    expect(result.replyMessage).toContain("Time slot confirmed: 11:00 AM");
   });
 
   it("completes booking when name is provided in AWAITING_NAME step", () => {

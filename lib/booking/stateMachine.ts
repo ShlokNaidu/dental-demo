@@ -1,6 +1,6 @@
 import { ConversationContext, StepState } from "@/types";
 import { CLINIC_SERVICES } from "../utils/constants";
-import { isMedicalEmergency, isValidBookingDate, isValidBookingTime } from "../utils/validators";
+import { isMedicalEmergency, isValidBookingDate, normalizeBookingTime } from "../utils/validators";
 
 export interface StateMachineResult {
   nextStep: StepState;
@@ -86,7 +86,7 @@ export function processIncomingMessage(
       return {
         nextStep: "AWAITING_DATE",
         updatedContext: { ...context, service: selectedService },
-        replyMessage: `Great choice! Service selected: ${selectedService}.\n\nPlease provide your preferred date (YYYY-MM-DD, or 'Today' / 'Tomorrow').`,
+        replyMessage: `Selected service: ${selectedService}.\n\nPlease provide your preferred date for the appointment (e.g. YYYY-MM-DD or 'Today' / 'Tomorrow').`,
       };
     }
 
@@ -112,24 +112,25 @@ export function processIncomingMessage(
       return {
         nextStep: "AWAITING_TIME",
         updatedContext: { ...context, date: parsedDate },
-        replyMessage: `Date set to ${parsedDate}.\n\nPlease select a time slot (e.g. 10:00 AM, 11:30 AM, 02:00 PM, 04:30 PM, 06:00 PM).`,
+        replyMessage: `Date set to ${parsedDate}.\n\nPlease select a time slot (e.g. 11 am, 10:00 AM, 11:30 AM, 02:00 PM, 04:30 PM, 06:00 PM).`,
       };
     }
 
     case "AWAITING_TIME": {
-      if (!isValidBookingTime(text)) {
+      const normalizedTime = normalizeBookingTime(text);
+      if (!normalizedTime) {
         return {
           nextStep: "AWAITING_TIME",
           updatedContext: context,
           replyMessage:
-            "Please provide a valid time format, e.g., '10:00 AM', '02:00 PM', or '06:00 PM'.",
+            "Please provide a valid time format, e.g., '11 am', '10:30 AM', '04:00 PM', or '14:00'.",
         };
       }
 
       return {
         nextStep: "AWAITING_NAME",
-        updatedContext: { ...context, time: text },
-        replyMessage: `Time slot confirmed: ${text}.\n\nFinally, please enter your full name to complete the booking.`,
+        updatedContext: { ...context, time: normalizedTime },
+        replyMessage: `Time slot confirmed: ${normalizedTime}.\n\nFinally, please enter your full name to complete the booking.`,
       };
     }
 

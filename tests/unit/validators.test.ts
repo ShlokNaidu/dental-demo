@@ -5,6 +5,7 @@ import {
   formatPhoneNumber,
   isValidBookingDate,
   isValidBookingTime,
+  normalizeBookingTime,
 } from "@/lib/utils/validators";
 
 describe("lib/utils/validators", () => {
@@ -53,11 +54,16 @@ describe("lib/utils/validators", () => {
     });
   });
 
-  describe("isValidBookingTime", () => {
-    it("validates 12-hour AM/PM and 24-hour time strings", () => {
+  describe("isValidBookingTime and normalizeBookingTime", () => {
+    it("validates and normalizes human time inputs", () => {
       expect(isValidBookingTime("10:00 AM")).toBe(true);
-      expect(isValidBookingTime("04:30 PM")).toBe(true);
-      expect(isValidBookingTime("14:30")).toBe(true);
+      expect(normalizeBookingTime("11 am")).toBe("11:00 AM");
+      expect(normalizeBookingTime("11am")).toBe("11:00 AM");
+      expect(normalizeBookingTime("'11:00 AM'")).toBe("11:00 AM");
+      expect(normalizeBookingTime('"11:00 AM"')).toBe("11:00 AM");
+      expect(normalizeBookingTime("4pm")).toBe("04:00 PM");
+      expect(normalizeBookingTime("4 pm")).toBe("04:00 PM");
+      expect(normalizeBookingTime("14:00")).toBe("02:00 PM");
       expect(isValidBookingTime("invalid-time")).toBe(false);
     });
   });
