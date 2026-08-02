@@ -3,12 +3,14 @@
 import React from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { motion } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
 import { Button } from "@/components/ui/Button";
+import { Counter } from "@/components/animations/Counter";
 import { Calendar, PhoneCall, ShieldCheck, MapPin, Star, Award } from "lucide-react";
 import { CLINIC_PHONE, DOCTOR_NAME } from "@/lib/utils/constants";
 
 export const HeroSection: React.FC = () => {
+  const shouldReduceMotion = useReducedMotion();
   const cleanPhone = CLINIC_PHONE.replace(/[^\d]/g, "");
   const waUrl = `https://wa.me/${cleanPhone}?text=${encodeURIComponent(
     "Hi, I would like to book an appointment at Smile Care Dental Clinic"
@@ -21,11 +23,11 @@ export const HeroSection: React.FC = () => {
       <div className="absolute top-1/3 left-0 w-80 h-80 bg-amber-100/30 rounded-full blur-3xl pointer-events-none" />
 
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        {/* Location & Accreditation Tag (Replaces AI pill badge) */}
+        {/* Location & Accreditation Tag */}
         <motion.div
-          initial={{ opacity: 0, y: -10 }}
+          initial={shouldReduceMotion ? {} : { opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.4, delay: 0.1 }}
+          transition={{ duration: 0.35, delay: 0.05 }}
           className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white border border-stone-200 shadow-sm text-xs sm:text-sm font-medium text-stone-700 mb-6"
         >
           <MapPin className="w-4 h-4 text-accent" />
@@ -40,9 +42,9 @@ export const HeroSection: React.FC = () => {
           {/* Main Copy Column */}
           <div className="lg:col-span-7 space-y-6">
             <motion.h1
-              initial={{ opacity: 0, y: 15 }}
+              initial={shouldReduceMotion ? {} : { opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.2 }}
+              transition={{ duration: 0.4, delay: 0.12 }}
               className="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-charcoal leading-tight"
             >
               Painless, Modern Dental Care in{" "}
@@ -52,18 +54,18 @@ export const HeroSection: React.FC = () => {
             </motion.h1>
 
             <motion.p
-              initial={{ opacity: 0, y: 15 }}
+              initial={shouldReduceMotion ? {} : { opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.35 }}
+              transition={{ duration: 0.4, delay: 0.22 }}
               className="text-lg sm:text-xl text-charcoal-muted leading-relaxed max-w-2xl"
             >
               Led by <strong className="text-charcoal font-semibold">{DOCTOR_NAME}</strong>. From painless root canals to digital braces, reserve your appointment online in under 60 seconds or message our WhatsApp team.
             </motion.p>
 
             <motion.div
-              initial={{ opacity: 0, y: 15 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.5 }}
+              initial={shouldReduceMotion ? {} : { opacity: 0, scale: 0.95, y: 10 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              transition={{ duration: 0.4, delay: 0.32, ease: "easeOut" }}
               className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 pt-2"
             >
               <Link href="/book/smile-care-indore">
@@ -80,11 +82,11 @@ export const HeroSection: React.FC = () => {
               </a>
             </motion.div>
 
-            {/* Trust Badges */}
+            {/* Trust Badges Staggered Last */}
             <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.5, delay: 0.65 }}
+              initial={shouldReduceMotion ? {} : { opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.4, delay: 0.42 }}
               className="flex flex-wrap items-center gap-6 text-xs sm:text-sm text-stone-600 pt-4 border-t border-stone-200/60"
             >
               <div className="flex items-center gap-2">
@@ -104,11 +106,11 @@ export const HeroSection: React.FC = () => {
             </motion.div>
           </div>
 
-          {/* Hero Photography Visual Card */}
+          {/* Hero Photography Visual Card - Right Slide Entrance */}
           <motion.div
-            initial={{ opacity: 0, scale: 0.96 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.6, delay: 0.4 }}
+            initial={shouldReduceMotion ? {} : { opacity: 0, x: 30 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.45, delay: 0.25, ease: "easeOut" }}
             className="lg:col-span-5"
           >
             <div className="relative bg-white rounded-3xl p-3 shadow-2xl border border-stone-200">
@@ -135,6 +137,22 @@ export const HeroSection: React.FC = () => {
                       Book Slot →
                     </span>
                   </Link>
+                </div>
+
+                {/* Animated Counters */}
+                <div className="grid grid-cols-2 gap-3 text-center pt-2 border-t border-stone-100">
+                  <div className="p-2.5 bg-stone-50 rounded-xl">
+                    <div className="text-lg font-bold text-accent">
+                      <Counter value={5000} suffix="+" />
+                    </div>
+                    <div className="text-[11px] text-stone-500">Patients Treated</div>
+                  </div>
+                  <div className="p-2.5 bg-stone-50 rounded-xl">
+                    <div className="text-lg font-bold text-accent">
+                      <Counter value={15} suffix="+ Yrs" />
+                    </div>
+                    <div className="text-[11px] text-stone-500">Clinical Experience</div>
+                  </div>
                 </div>
               </div>
             </div>

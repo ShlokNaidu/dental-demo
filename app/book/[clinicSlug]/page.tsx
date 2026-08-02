@@ -2,19 +2,20 @@
 
 import React, { useState, useEffect } from "react";
 import { useParams, useSearchParams } from "next/navigation";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 import { Card } from "@/components/ui/Card";
 import { CLINIC_SERVICES, CLINIC_NAME } from "@/lib/utils/constants";
 import { isValidBookingDate, isValidBookingTime, isValidPhoneNumber } from "@/lib/utils/validators";
-import { CheckCircle2, ChevronLeft, Calendar, Clock, User, Phone, Stethoscope, MessageCircle } from "lucide-react";
+import { CheckCircle2, ChevronLeft, Clock, Stethoscope, MessageCircle } from "lucide-react";
 
-type BookingStep = 1 | 2 | 3 | 4 | 5; // 1: Service, 2: Date, 3: Time, 4: Patient Info, 5: Success
+type BookingStep = 1 | 2 | 3 | 4 | 5;
 
 export default function BookingWidgetPage() {
   const params = useParams();
   const searchParams = useSearchParams();
+  const shouldReduceMotion = useReducedMotion();
   const clinicSlug = (params?.clinicSlug as string) || "smile-care-indore";
 
   const initialService = searchParams?.get("service") || "";
@@ -120,6 +121,12 @@ export default function BookingWidgetPage() {
     return Math.min(((step - 1) / 4) * 100, 100);
   };
 
+  const stepVariants = {
+    initial: { opacity: 0, x: shouldReduceMotion ? 0 : 40 },
+    animate: { opacity: 1, x: 0 },
+    exit: { opacity: 0, x: shouldReduceMotion ? 0 : -40 },
+  };
+
   return (
     <div className="min-h-screen bg-stone-100 flex flex-col justify-center items-center p-4 sm:p-6">
       <div className="w-full max-w-xl">
@@ -155,10 +162,11 @@ export default function BookingWidgetPage() {
             {step === 1 && (
               <motion.div
                 key="step1"
-                initial={{ opacity: 0, x: 20 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: -20 }}
-                transition={{ duration: 0.2 }}
+                variants={stepVariants}
+                initial="initial"
+                animate="animate"
+                exit="exit"
+                transition={{ duration: 0.3, ease: "easeInOut" }}
                 className="space-y-6"
               >
                 <div>
@@ -175,7 +183,7 @@ export default function BookingWidgetPage() {
                         onClick={() => setSelectedService(s.name)}
                         className={`p-4 rounded-xl border cursor-pointer transition-all flex items-center justify-between ${
                           isSelected
-                            ? "border-accent bg-accent-light/50 ring-2 ring-accent/30"
+                            ? "border-accent bg-accent-light/50 ring-2 ring-accent/30 shadow-sm"
                             : "border-stone-200 hover:border-stone-300 bg-white"
                         }`}
                       >
@@ -191,7 +199,7 @@ export default function BookingWidgetPage() {
                   })}
                 </div>
 
-                <Button onClick={handleNextStep} className="w-full">
+                <Button onClick={handleNextStep} className="w-full font-bold">
                   Continue to Select Date →
                 </Button>
               </motion.div>
@@ -201,10 +209,11 @@ export default function BookingWidgetPage() {
             {step === 2 && (
               <motion.div
                 key="step2"
-                initial={{ opacity: 0, x: 20 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: -20 }}
-                transition={{ duration: 0.2 }}
+                variants={stepVariants}
+                initial="initial"
+                animate="animate"
+                exit="exit"
+                transition={{ duration: 0.3, ease: "easeInOut" }}
                 className="space-y-6"
               >
                 <div>
@@ -249,7 +258,7 @@ export default function BookingWidgetPage() {
                   </div>
                 </div>
 
-                <Button onClick={handleNextStep} className="w-full">
+                <Button onClick={handleNextStep} className="w-full font-bold">
                   Continue to Select Time →
                 </Button>
               </motion.div>
@@ -259,10 +268,11 @@ export default function BookingWidgetPage() {
             {step === 3 && (
               <motion.div
                 key="step3"
-                initial={{ opacity: 0, x: 20 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: -20 }}
-                transition={{ duration: 0.2 }}
+                variants={stepVariants}
+                initial="initial"
+                animate="animate"
+                exit="exit"
+                transition={{ duration: 0.3, ease: "easeInOut" }}
                 className="space-y-6"
               >
                 <div>
@@ -297,7 +307,7 @@ export default function BookingWidgetPage() {
                   })}
                 </div>
 
-                <Button onClick={handleNextStep} className="w-full">
+                <Button onClick={handleNextStep} className="w-full font-bold">
                   Continue to Patient Details →
                 </Button>
               </motion.div>
@@ -307,10 +317,11 @@ export default function BookingWidgetPage() {
             {step === 4 && (
               <motion.div
                 key="step4"
-                initial={{ opacity: 0, x: 20 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: -20 }}
-                transition={{ duration: 0.2 }}
+                variants={stepVariants}
+                initial="initial"
+                animate="animate"
+                exit="exit"
+                transition={{ duration: 0.3, ease: "easeInOut" }}
                 className="space-y-6"
               >
                 <div>
@@ -347,7 +358,7 @@ export default function BookingWidgetPage() {
                   <div>• Date & Time: <span className="font-semibold">{selectedDate} at {selectedTime}</span></div>
                 </div>
 
-                <Button onClick={handleNextStep} disabled={isSubmitting} className="w-full">
+                <Button onClick={handleNextStep} disabled={isSubmitting} className="w-full font-bold">
                   {isSubmitting ? "Confirming Booking..." : "Confirm & Send WhatsApp Ticket"}
                 </Button>
               </motion.div>
@@ -357,7 +368,7 @@ export default function BookingWidgetPage() {
             {step === 5 && (
               <motion.div
                 key="step5"
-                initial={{ opacity: 0, scale: 0.9 }}
+                initial={shouldReduceMotion ? {} : { opacity: 0, scale: 0.9 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 0.4, ease: "easeOut" }}
                 className="text-center py-6 space-y-6"
@@ -385,7 +396,7 @@ export default function BookingWidgetPage() {
                 </div>
 
                 <div className="pt-2">
-                  <Button onClick={() => setStep(1)} variant="outline" className="w-full">
+                  <Button onClick={() => setStep(1)} variant="outline" className="w-full font-bold">
                     Book Another Appointment
                   </Button>
                 </div>

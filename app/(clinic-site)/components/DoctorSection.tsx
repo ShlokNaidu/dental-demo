@@ -12,8 +12,8 @@ export const DoctorSection: React.FC = () => {
     <section id="doctor" className="py-20 bg-stone-50/70">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-          {/* Doctor Portrait Image */}
-          <ScrollReveal className="lg:col-span-5 relative">
+          {/* Doctor Portrait Image - Reveals from Left */}
+          <ScrollReveal direction="left" delay={0.1} className="lg:col-span-5 relative">
             <div className="relative rounded-3xl overflow-hidden shadow-2xl border-4 border-white bg-white">
               <Image
                 src="/images/doctor-portrait.png"
@@ -34,8 +34,8 @@ export const DoctorSection: React.FC = () => {
             </div>
           </ScrollReveal>
 
-          {/* Doctor Credentials & Bio */}
-          <ScrollReveal className="lg:col-span-7 space-y-6">
+          {/* Doctor Credentials & Bio - Reveals from Right */}
+          <ScrollReveal direction="right" delay={0.2} className="lg:col-span-7 space-y-6">
             <div className="space-y-2">
               <span className="text-sm font-bold tracking-wider text-accent uppercase flex items-center gap-1.5">
                 <Stethoscope className="w-4 h-4" />

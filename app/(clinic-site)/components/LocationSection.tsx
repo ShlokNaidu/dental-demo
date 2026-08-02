@@ -11,7 +11,7 @@ export const LocationSection: React.FC = () => {
     <section id="location" className="py-20 bg-background">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <ScrollReveal className="text-center max-w-2xl mx-auto mb-16 space-y-4">
-          <span className="text-sm font-semibold tracking-wider text-accent uppercase">
+          <span className="text-sm font-bold tracking-wider text-accent uppercase">
             Visit Our Clinic
           </span>
           <h2 className="text-3xl sm:text-4xl font-extrabold text-charcoal">
@@ -23,9 +23,9 @@ export const LocationSection: React.FC = () => {
         </ScrollReveal>
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-          {/* Info Card */}
-          <ScrollReveal className="lg:col-span-5 space-y-6">
-            <Card className="p-8 space-y-6">
+          {/* Info Card - Reveals from Left */}
+          <ScrollReveal direction="left" delay={0.1} className="lg:col-span-5 space-y-6">
+            <Card className="p-8 space-y-6 border-stone-200">
               <div className="flex items-start gap-4">
                 <div className="p-3 bg-accent/10 text-accent rounded-xl">
                   <MapPin className="w-6 h-6" />
@@ -63,8 +63,8 @@ export const LocationSection: React.FC = () => {
             </Card>
           </ScrollReveal>
 
-          {/* Map Embed Frame */}
-          <ScrollReveal className="lg:col-span-7 h-full min-h-[380px]">
+          {/* Map Frame - Reveals from Right */}
+          <ScrollReveal direction="right" delay={0.2} className="lg:col-span-7 h-full min-h-[380px]">
             <div className="w-full h-full min-h-[380px] rounded-3xl overflow-hidden shadow-lg border border-stone-200">
               <iframe
                 title="Smile Care Dental Clinic Vijay Nagar Indore Map"
