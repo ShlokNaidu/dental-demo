@@ -17,30 +17,32 @@ export function processIncomingMessage(
   messageText: string
 ): StateMachineResult {
   const text = messageText.trim();
+  const lower = text.toLowerCase();
 
-  // Check for medical emergency keyword first
+  // 1. Check for medical emergency keyword first
   if (isMedicalEmergency(text)) {
     return {
       nextStep: "IDLE",
       updatedContext: context,
       replyMessage:
-        "⚠️ Urgent Notice: We have flagged your request as an urgent medical inquiry. A dentist or clinical assistant from Smile Care Dental Clinic will contact you immediately on this number. If you are experiencing severe symptoms, please visit the nearest hospital emergency room.",
+        "⚠️ Urgent Notice: We have flagged your request as an urgent medical inquiry. A dentist or clinical assistant from Smile Care Dental Clinic will contact you immediately. If you are experiencing severe symptoms, please visit the nearest emergency room.",
       isEmergencyHandled: true,
       emergencyReason: `Medical keywords detected: "${text}"`,
     };
   }
 
-  // Handle command/intent keywords to start booking flow
-  const lower = text.toLowerCase();
-  const isBookingIntent =
-    lower.includes("book") ||
-    lower.includes("appointment") ||
-    lower.includes("schedule") ||
+  // 2. Explicit booking intent detection
+  const isExplicitBooking =
+    lower === "book" ||
+    lower.startsWith("book ") ||
+    lower.includes("book an appointment") ||
+    lower.includes("schedule an appointment") ||
+    lower.includes("i want to book") ||
     lower === "hi" ||
     lower === "hello" ||
     lower === "start";
 
-  if (isBookingIntent) {
+  if (isExplicitBooking && currentStep === "IDLE") {
     const serviceOptions = CLINIC_SERVICES.map(
       (s, i) => `${i + 1}. ${s.name} (₹${s.price})`
     ).join("\n");
@@ -52,6 +54,7 @@ export function processIncomingMessage(
     };
   }
 
+  // 3. State machine handling
   switch (currentStep) {
     case "AWAITING_SERVICE": {
       let selectedService = "";
@@ -60,55 +63,56 @@ export function processIncomingMessage(
       if (!isNaN(numIndex) && numIndex >= 1 && numIndex <= CLINIC_SERVICES.length) {
         selectedService = CLINIC_SERVICES[numIndex - 1].name;
       } else {
-        const matched = CLINIC_SERVICES.find((s) =>
-          s.name.toLowerCase().includes(text.toLowerCase())
+        const found = CLINIC_SERVICES.find(
+          (s) => s.name.toLowerCase() === lower || lower.includes(s.name.toLowerCase())
         );
-        if (matched) selectedService = matched.name;
+        if (found) {
+          selectedService = found.name;
+        }
       }
 
       if (!selectedService) {
         const serviceOptions = CLINIC_SERVICES.map(
           (s, i) => `${i + 1}. ${s.name} (₹${s.price})`
         ).join("\n");
+
         return {
           nextStep: "AWAITING_SERVICE",
           updatedContext: context,
-          replyMessage: `Please select a valid service number (1-${CLINIC_SERVICES.length}) or service name from below:\n\n${serviceOptions}`,
+          replyMessage: `Please select a valid service from the list below:\n\n${serviceOptions}`,
         };
       }
 
       return {
         nextStep: "AWAITING_DATE",
         updatedContext: { ...context, service: selectedService },
-        replyMessage: `Great choice! Selected service: ${selectedService}.\n\nPlease provide your preferred date for the appointment (e.g. YYYY-MM-DD or "Tomorrow" / "Today").`,
+        replyMessage: `Great choice! Service selected: ${selectedService}.\n\nPlease provide your preferred date (YYYY-MM-DD, or 'Today' / 'Tomorrow').`,
       };
     }
 
     case "AWAITING_DATE": {
-      let dateValue = text;
-      const today = new Date();
-
-      if (text.toLowerCase() === "today") {
-        dateValue = today.toISOString().split("T")[0];
-      } else if (text.toLowerCase() === "tomorrow") {
-        const tomorrow = new Date(today);
+      let parsedDate = text;
+      if (lower === "today") {
+        parsedDate = new Date().toISOString().split("T")[0];
+      } else if (lower === "tomorrow") {
+        const tomorrow = new Date();
         tomorrow.setDate(tomorrow.getDate() + 1);
-        dateValue = tomorrow.toISOString().split("T")[0];
+        parsedDate = tomorrow.toISOString().split("T")[0];
       }
 
-      if (!isValidBookingDate(dateValue)) {
+      if (!isValidBookingDate(parsedDate)) {
         return {
           nextStep: "AWAITING_DATE",
           updatedContext: context,
           replyMessage:
-            "Please provide a valid date format (YYYY-MM-DD, Today, or Tomorrow) that is not in the past.",
+            "Please provide a valid date (YYYY-MM-DD or 'Today'/'Tomorrow') for today or a future date.",
         };
       }
 
       return {
         nextStep: "AWAITING_TIME",
-        updatedContext: { ...context, date: dateValue },
-        replyMessage: `Date confirmed: ${dateValue}.\n\nPlease select your preferred appointment time slot (e.g., 10:00 AM, 11:30 AM, 04:00 PM, 06:30 PM). Clinic hours: 10 AM - 8 PM.`,
+        updatedContext: { ...context, date: parsedDate },
+        replyMessage: `Date set to ${parsedDate}.\n\nPlease select a time slot (e.g. 10:00 AM, 11:30 AM, 02:00 PM, 04:30 PM, 06:00 PM).`,
       };
     }
 
@@ -118,7 +122,7 @@ export function processIncomingMessage(
           nextStep: "AWAITING_TIME",
           updatedContext: context,
           replyMessage:
-            "Please provide a valid time format, e.g., '10:30 AM' or '04:00 PM'.",
+            "Please provide a valid time format, e.g., '10:00 AM', '02:00 PM', or '06:00 PM'.",
         };
       }
 
@@ -146,18 +150,17 @@ export function processIncomingMessage(
       return {
         nextStep: "CONFIRMED",
         updatedContext: finalContext,
-        replyMessage: `🎉 Appointment Confirmed!\n\nPatient Name: ${finalContext.name}\nService: ${finalContext.service}\nDate: ${finalContext.date}\nTime: ${finalContext.time}\nLocation: Smile Care Dental Clinic, Vijay Nagar, Indore.\n\nThank you! We look forward to seeing you.`,
+        replyMessage: `🎉 Appointment Confirmed!\n\nPatient Name: ${finalContext.name}\nService: ${finalContext.service}\nDate: ${finalContext.date}\nTime: ${finalContext.time}\nLocation: Smile Care Dental Clinic, Scheme 54, Vijay Nagar, Indore.\n\nThank you! We look forward to seeing you.`,
         isBookingComplete: true,
       };
     }
 
-    case "CONFIRMED":
+    case "IDLE":
     default: {
       return {
         nextStep: "IDLE",
         updatedContext: {},
-        replyMessage:
-          "How can we help you today? Reply 'Book' to start a new appointment booking or ask any question about our services.",
+        replyMessage: "",
       };
     }
   }

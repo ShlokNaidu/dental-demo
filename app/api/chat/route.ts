@@ -24,12 +24,10 @@ export async function POST(request: Request) {
 
     let replyText = stateResult.replyMessage;
 
-    // If in IDLE and not booking intent or emergency, delegate to Groq AI
-    if (stateResult.nextStep === "IDLE" && !stateResult.isEmergencyHandled && !replyText) {
+    // If replyText is empty (IDLE state general inquiry), invoke Groq AI
+    if (!replyText && stateResult.nextStep === "IDLE" && !stateResult.isEmergencyHandled) {
       replyText = await generateGroqResponse({
         userQuery: message,
-        systemPrompt:
-          "You are an intelligent, friendly AI receptionist for Smile Care Dental Clinic in Vijay Nagar, Indore. Answer patient queries concisely in under 3 sentences. If asked about booking, direct them to type 'Book' or use our online form.",
       });
     }
 
@@ -79,7 +77,7 @@ export async function POST(request: Request) {
       {
         success: true,
         reply:
-          "Thank you for contacting Smile Care Dental Clinic! Our clinic is open Mon-Sat 10 AM - 8 PM in Vijay Nagar, Indore. Reply 'Book' to schedule an appointment.",
+          "Thank you for contacting Smile Care Dental Clinic! Our clinic is open Monday to Saturday from 10:00 AM to 8:00 PM in Scheme 54, Vijay Nagar, Indore. Reply 'Book' to schedule an appointment.",
         nextStep: "IDLE",
         updatedContext: {},
       },
