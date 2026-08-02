@@ -2,79 +2,94 @@
 
 import React from "react";
 import { ScrollReveal } from "@/components/animations/ScrollReveal";
-import { Card } from "@/components/ui/Card";
-import { Star, Quote } from "lucide-react";
 import { DOCTOR_NAME } from "@/lib/utils/constants";
 
-export const TestimonialsSection: React.FC = () => {
-  const reviews = [
-    {
-      name: "Priya Sharma",
-      location: "Vijay Nagar, Indore",
-      rating: 5,
-      treatment: "Root Canal Treatment",
-      quote:
-        `I was terrified of getting a root canal, but ${DOCTOR_NAME} and her team made it completely painless. The WhatsApp booking was super quick and easy too!`,
-    },
-    {
-      name: "Rajesh Verma",
-      location: "Palasia, Indore",
-      rating: 5,
-      treatment: "Teeth Cleaning",
-      quote:
-        `Clean, hygienic clinic with very polite staff. I booked my appointment online with ${DOCTOR_NAME} in under a minute and got immediate WhatsApp confirmation.`,
-    },
-    {
-      name: "Ananya Joshi",
-      location: "Saket Nagar, Indore",
-      rating: 5,
-      treatment: "Braces Consultation",
-      quote:
-        `Super transparent prices! ${DOCTOR_NAME} didn't try to upsell anything unnecessary. Great experience overall for my alignment consultation.`,
-    },
-  ];
+const REVIEWS = [
+  {
+    name: "Priya Sharma",
+    initials: "PS",
+    location: "Vijay Nagar, Indore",
+    rating: 5,
+    treatment: "Root Canal",
+    quote: `I was terrified of getting a root canal, but ${DOCTOR_NAME} and her team made it completely painless. The WhatsApp booking was super quick too!`,
+  },
+  {
+    name: "Rajesh Verma",
+    initials: "RV",
+    location: "Palasia, Indore",
+    rating: 5,
+    treatment: "Teeth Cleaning",
+    quote: `Clean, hygienic clinic with very polite staff. Booked with ${DOCTOR_NAME} in under a minute and got immediate confirmation.`,
+  },
+  {
+    name: "Ananya Joshi",
+    initials: "AJ",
+    location: "Saket Nagar, Indore",
+    rating: 5,
+    treatment: "Braces Consultation",
+    quote: `Super transparent prices. ${DOCTOR_NAME} didn't upsell anything. Great experience overall for my alignment consultation.`,
+  },
+];
 
+export const TestimonialsSection: React.FC = () => {
   return (
-    <section className="py-20 bg-stone-50/50">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-        <ScrollReveal className="text-center max-w-2xl mx-auto mb-16 space-y-4">
-          <span className="text-sm font-bold tracking-wider text-accent uppercase">
-            Patient Stories
-          </span>
-          <h2 className="text-3xl sm:text-4xl font-extrabold text-charcoal">
-            What Our Patients Say
-          </h2>
-          <p className="text-charcoal-muted">
-            Read real feedback from patients who experienced our gentle dental care in Indore.
-          </p>
+    <section
+      className="py-24"
+      style={{ background: "var(--bg-elevated)" }}
+    >
+      <div className="max-w-7xl mx-auto px-6 lg:px-8">
+        <ScrollReveal className="mb-16">
+          <p className="label-caps text-gold mb-3">Patient Stories</p>
+          <h2 className="text-display-md text-ivory">What Our Patients Say</h2>
         </ScrollReveal>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {reviews.map((rev, idx) => (
+          {REVIEWS.map((rev, idx) => (
             <ScrollReveal key={rev.name} delay={idx * 0.1}>
-              <Card className="h-full flex flex-col justify-between p-6 border-stone-200">
-                <div className="space-y-4">
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-1 text-amber-400">
-                      {[...Array(rev.rating)].map((_, i) => (
-                        <Star key={i} className="w-4 h-4 fill-amber-400" />
-                      ))}
-                    </div>
-                    <Quote className="w-6 h-6 text-stone-300" />
+              <div
+                className="card-dark rounded-2xl p-8 h-full flex flex-col justify-between"
+              >
+                {/* Stars */}
+                <div>
+                  <div className="flex gap-1 mb-6">
+                    {[...Array(rev.rating)].map((_, i) => (
+                      <svg key={i} width="16" height="16" viewBox="0 0 24 24" fill="#D97706"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                    ))}
                   </div>
-                  <p className="text-stone-700 italic text-sm leading-relaxed">
-                    "{rev.quote}"
+
+                  {/* Large decorative quote mark */}
+                  <div
+                    className="text-6xl font-black mb-2 leading-none select-none"
+                    style={{ color: "var(--teal)", fontFamily: "Georgia, serif", opacity: 0.5 }}
+                  >
+                    "
+                  </div>
+
+                  <p className="text-base italic leading-relaxed mb-6" style={{ color: "var(--stone-400)" }}>
+                    {rev.quote}
                   </p>
                 </div>
 
-                <div className="pt-4 mt-4 border-t border-stone-100">
-                  <h4 className="font-bold text-charcoal text-sm">{rev.name}</h4>
-                  <div className="flex items-center justify-between text-xs text-stone-500">
-                    <span>{rev.location}</span>
-                    <span className="text-accent font-semibold">{rev.treatment}</span>
+                {/* Attribution */}
+                <div className="flex items-center gap-3 pt-6" style={{ borderTop: "1px solid var(--border-subtle)" }}>
+                  {/* Initials avatar */}
+                  <div
+                    className="w-10 h-10 rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0"
+                    style={{ background: "var(--teal-dim)", color: "var(--teal)" }}
+                  >
+                    {rev.initials}
+                  </div>
+                  <div>
+                    <div className="text-ivory font-bold text-sm" style={{ fontFamily: "'Hanken Grotesk', sans-serif" }}>
+                      {rev.name}
+                    </div>
+                    <div className="flex items-center gap-2 mt-0.5">
+                      <span className="label-caps" style={{ color: "var(--stone-600)" }}>{rev.location}</span>
+                      <span className="label-caps" style={{ color: "var(--teal)" }}>· {rev.treatment}</span>
+                    </div>
                   </div>
                 </div>
-              </Card>
+              </div>
             </ScrollReveal>
           ))}
         </div>

@@ -1,53 +1,210 @@
-@import url('https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@700,800,900&f[]=switzer@400,500,600,700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700;800;900&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&display=swap');
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
+/* =========================================
+   DESIGN SYSTEM — Architectural Dental Collective
+   Stitch-generated, faithfully implemented
+   ========================================= */
 :root {
-  --background: #FAF9F6;
-  --foreground: #1C1917;
-  --accent: #0D9488;
-  --accent-hover: #0F766E;
-  --accent-muted: #E6F4F1;
-  --accent-gold: #D97706;
+  /* Core palette */
+  --bg-base:         #0F1117;   /* Deep navy-charcoal */
+  --bg-surface:      #17130F;   /* Warm-tinted surface */
+  --bg-elevated:     #1F1B17;   /* Cards on dark bg */
+  --bg-elevated-hi:  #2E2925;   /* Hover / elevated */
+
+  /* Accent */
+  --teal:            #0D9488;
+  --teal-hover:      #0F766E;
+  --teal-dim:        rgba(13,148,136,0.15);
+
+  /* Secondary accent */
+  --gold:            #D97706;
+  --gold-hover:      #B45309;
+  --gold-dim:        rgba(217,119,6,0.15);
+
+  /* Text */
+  --ivory:           #FAF9F6;
+  --stone-400:       #A8A29E;
+  --stone-600:       #57534E;
+
+  /* Borders */
+  --border-subtle:   rgba(168,162,158,0.2);  /* stone-400 @ 20% */
+  --border-teal:     rgba(13,148,136,0.4);
+
+  /* Legacy compatibility aliases for dashboard/booking pages */
+  --background:      #FAF9F6;
+  --foreground:      #1C1917;
+  --accent:          #0D9488;
+  --accent-hover:    #0F766E;
+  --accent-muted:    #E6F4F1;
+  --accent-gold:     #D97706;
   --accent-gold-light: #FEF3C7;
 }
 
+/* ── Base ─────────────────────────────── */
 body {
-  background-color: var(--background);
-  color: var(--foreground);
-  font-family: 'Switzer', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background-color: var(--bg-base);
+  color: var(--ivory);
+  font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-size: 16px;
+  line-height: 1.6;
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
-h1, h2, h3, h4, h5, h6, .font-heading {
-  font-family: 'Cabinet Grotesk', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  letter-spacing: -0.02em;
+/* Display headings */
+h1, h2, h3, h4, h5, h6, .font-display {
+  font-family: 'Hanken Grotesk', -apple-system, sans-serif;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1.05;
 }
 
-/* Custom Highlight Effect for key headline words */
-.custom-highlight {
+/* ── Typography Scale ─────────────────── */
+.text-display-2xl {
+  font-family: 'Hanken Grotesk', sans-serif;
+  font-size: clamp(56px, 7vw, 96px);
+  font-weight: 800;
+  line-height: 1.0;
+  letter-spacing: -0.04em;
+}
+.text-display-lg {
+  font-family: 'Hanken Grotesk', sans-serif;
+  font-size: clamp(40px, 5vw, 72px);
+  font-weight: 700;
+  line-height: 1.05;
+  letter-spacing: -0.03em;
+}
+.text-display-md {
+  font-family: 'Hanken Grotesk', sans-serif;
+  font-size: clamp(32px, 4vw, 56px);
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -0.025em;
+}
+.label-caps {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+/* ── Color Utilities ──────────────────── */
+.text-ivory      { color: var(--ivory); }
+.text-stone-muted{ color: var(--stone-400); }
+.text-teal       { color: var(--teal); }
+.text-gold       { color: var(--gold); }
+.bg-base         { background: var(--bg-base); }
+.bg-surface      { background: var(--bg-surface); }
+.bg-elevated     { background: var(--bg-elevated); }
+
+/* ── Glassmorphism ────────────────────── */
+.glass {
+  background: rgba(255,255,255,0.06);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255,255,255,0.1);
+}
+.glass-teal {
+  background: rgba(13,148,136,0.1);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(13,148,136,0.25);
+}
+
+/* ── Buttons (pill-shaped per Stitch spec) ── */
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 14px 32px;
+  border-radius: 9999px;
+  background: var(--teal);
+  color: #fff;
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 700;
+  font-size: 15px;
+  letter-spacing: 0.01em;
+  border: none;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.15s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.2s;
+}
+.btn-primary:hover {
+  background: var(--teal-hover);
+  transform: scale(1.03);
+  box-shadow: 0 8px 40px rgba(13,148,136,0.35);
+}
+
+.btn-ghost {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 13px 32px;
+  border-radius: 9999px;
+  background: transparent;
+  color: var(--ivory);
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 600;
+  font-size: 15px;
+  border: 1.5px solid rgba(250,249,246,0.4);
+  cursor: pointer;
+  transition: border-color 0.2s, background 0.2s, transform 0.15s cubic-bezier(0.34,1.56,0.64,1);
+}
+.btn-ghost:hover {
+  border-color: var(--ivory);
+  background: rgba(250,249,246,0.08);
+  transform: scale(1.03);
+}
+
+/* ── Section Borders ──────────────────── */
+.border-subtle { border-color: var(--border-subtle); }
+
+/* ── Cards ────────────────────────────── */
+.card-dark {
+  background: var(--bg-elevated);
+  border: 1px solid var(--border-subtle);
+  transition: border-color 0.25s, transform 0.25s, box-shadow 0.25s;
+}
+.card-dark:hover {
+  border-color: var(--border-teal);
+  transform: translateY(-4px);
+  box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+}
+
+/* ── Section title underline accent ──── */
+.teal-underline {
   position: relative;
   display: inline-block;
-  white-space: nowrap;
 }
-
-.custom-highlight::after {
+.teal-underline::after {
   content: '';
   position: absolute;
-  left: -4px;
-  right: -4px;
-  bottom: 2px;
-  height: 35%;
-  background: linear-gradient(120deg, rgba(13, 148, 136, 0.25), rgba(217, 119, 6, 0.25));
-  border-radius: 4px;
-  z-index: -1;
-  transform: rotate(-1deg);
+  left: 0;
+  bottom: -4px;
+  width: 48px;
+  height: 3px;
+  background: var(--teal);
+  border-radius: 2px;
 }
 
-/* Respect user prefers-reduced-motion setting */
+/* ── Image overlays ───────────────────── */
+.img-overlay-dark {
+  background: linear-gradient(
+    to top,
+    rgba(15,17,23,0.85) 0%,
+    rgba(15,17,23,0.2) 50%,
+    transparent 100%
+  );
+}
+
+/* ── Respect reduced motion ───────────── */
 @media (prefers-reduced-motion: reduce) {
   *, ::before, ::after {
     animation-duration: 0.01ms !important;
@@ -55,4 +212,13 @@ h1, h2, h3, h4, h5, h6, .font-heading {
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
   }
+}
+
+/* ── Dashboard / Booking overrides ───── */
+/* Keep light backgrounds for non-clinic-site pages */
+.dashboard-page,
+.booking-page {
+  --background: #FAF9F6;
+  background-color: var(--background) !important;
+  color: var(--foreground) !important;
 }
