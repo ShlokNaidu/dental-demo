@@ -35,9 +35,8 @@ export async function POST(request: Request) {
 
     // If emergency flagged, insert into human_followup_flags
     if (stateResult.isEmergencyHandled) {
-      await supabase.from("human_followup_flags").insert([
+      const { error: flagError } = await supabase.from("human_followup_flags").insert([
         {
-          clinic_id: "smile-care-indore",
           phone_number: phone,
           patient_name: "Web Visitor",
           original_message: message,
@@ -45,6 +44,9 @@ export async function POST(request: Request) {
           status: "PENDING",
         },
       ]);
+      if (flagError) {
+        console.error("Failed to insert emergency flag:", flagError.message);
+      }
     }
 
     // Save message to conversations table
