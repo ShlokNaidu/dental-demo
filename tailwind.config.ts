@@ -14,8 +14,14 @@ const config: Config = {
         accent: {
           DEFAULT: "#0D9488",
           hover: "#0F766E",
+          dark: "#042F2E",
           muted: "#E6F4F1",
           light: "#F0FDFA",
+        },
+        gold: {
+          DEFAULT: "#D97706",
+          light: "#FEF3C7",
+          dark: "#B45309",
         },
         charcoal: {
           DEFAULT: "#262626",
@@ -33,12 +39,13 @@ const config: Config = {
         },
       },
       fontFamily: {
-        display: ["CabinetGrotesk", "sans-serif"],
-        body: ["Switzer", "sans-serif"],
+        display: ["'Cabinet Grotesk'", "sans-serif"],
+        body: ["'Switzer'", "sans-serif"],
       },
       boxShadow: {
         card: "0 4px 20px -2px rgba(0, 0, 0, 0.05)",
-        "card-hover": "0 10px 30px -4px rgba(13, 148, 136, 0.12)",
+        "card-hover": "0 10px 30px -4px rgba(13, 148, 136, 0.15)",
+        "gold-glow": "0 10px 30px -4px rgba(217, 119, 6, 0.2)",
       },
     },
   },

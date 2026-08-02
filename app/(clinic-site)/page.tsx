@@ -1,6 +1,7 @@
 import React from "react";
 import { HeroSection } from "./components/HeroSection";
 import { ServicesSection } from "./components/ServicesSection";
+import { DoctorSection } from "./components/DoctorSection";
 import { WhyChooseUsSection } from "./components/WhyChooseUsSection";
 import { TestimonialsSection } from "./components/TestimonialsSection";
 import { LocationSection } from "./components/LocationSection";
@@ -12,6 +13,7 @@ export default function DemoClinicHomePage() {
     <main className="min-h-screen bg-background">
       <HeroSection />
       <ServicesSection />
+      <DoctorSection />
       <WhyChooseUsSection />
       <TestimonialsSection />
       <LocationSection />

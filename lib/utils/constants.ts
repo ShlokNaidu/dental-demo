@@ -3,8 +3,14 @@ import { ServiceItem } from "@/types";
 export const DEFAULT_CLINIC_ID = "smile-care-indore";
 export const CLINIC_NAME = "Smile Care Dental Clinic";
 export const CLINIC_ADDRESS = "Scheme 54, Vijay Nagar, Indore, MP 452010";
-export const CLINIC_PHONE = "+91 98765 43210";
+export const CLINIC_PHONE = "+91 98765 01234";
 export const CLINIC_HOURS = "Mon-Sat: 10:00 AM - 8:00 PM, Sun: Closed";
+
+export const DOCTOR_NAME = "Dr. Ananya Mehta";
+export const DOCTOR_TITLE = "BDS, MDS (Orthodontics & Endodontics)";
+export const DOCTOR_EXPERIENCE = "15+ Years Clinical Experience";
+export const DOCTOR_BIO =
+  "Senior Dental Surgeon specializing in gentle root canal therapy, digital orthodontics, and cosmetic smile design. Trained in modern computerized anesthesia and laser dentistry.";
 
 export const CLINIC_SERVICES: ServiceItem[] = [
   {

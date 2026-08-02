@@ -2,37 +2,38 @@
 
 import React from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/Button";
-import { Calendar, PhoneCall, ShieldCheck, Sparkles } from "lucide-react";
+import { Calendar, PhoneCall, ShieldCheck, MapPin, Star, Award } from "lucide-react";
+import { CLINIC_PHONE, DOCTOR_NAME } from "@/lib/utils/constants";
 
 export const HeroSection: React.FC = () => {
+  const cleanPhone = CLINIC_PHONE.replace(/[^\d]/g, "");
+  const waUrl = `https://wa.me/${cleanPhone}?text=${encodeURIComponent(
+    "Hi, I would like to book an appointment at Smile Care Dental Clinic"
+  )}`;
+
   return (
-    <section className="relative overflow-hidden pt-12 pb-20 md:pt-20 md:pb-32 bg-gradient-to-b from-accent-light/50 via-background to-background">
-      {/* Background Soft Floating Blob */}
-      <motion.div
-        animate={{
-          scale: [1, 1.08, 1],
-          opacity: [0.3, 0.45, 0.3],
-        }}
-        transition={{
-          duration: 8,
-          repeat: Infinity,
-          ease: "easeInOut",
-        }}
-        className="absolute -top-24 -right-24 w-96 h-96 rounded-full bg-teal-200/40 blur-3xl pointer-events-none"
-      />
+    <section className="relative overflow-hidden pt-10 pb-20 md:pt-16 md:pb-28 bg-gradient-to-b from-accent-light/60 via-background to-background">
+      {/* Background Soft Ambient Light */}
+      <div className="absolute top-0 right-0 w-1/2 h-96 bg-teal-100/40 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute top-1/3 left-0 w-80 h-80 bg-amber-100/30 rounded-full blur-3xl pointer-events-none" />
 
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        {/* Top Announcement Tag */}
+        {/* Location & Accreditation Tag (Replaces AI pill badge) */}
         <motion.div
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.4, delay: 0.1 }}
-          className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-accent-muted text-accent text-xs sm:text-sm font-medium mb-6 border border-accent/20"
+          className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white border border-stone-200 shadow-sm text-xs sm:text-sm font-medium text-stone-700 mb-6"
         >
-          <Sparkles className="w-4 h-4" />
-          <span>Indore's Premier WhatsApp-Automated Dental Care</span>
+          <MapPin className="w-4 h-4 text-accent" />
+          <span>Scheme 54, Vijay Nagar, Indore</span>
+          <span className="text-stone-300">•</span>
+          <span className="text-amber-700 font-semibold flex items-center gap-1">
+            <Award className="w-3.5 h-3.5" /> ISO Certified Clinic
+          </span>
         </motion.div>
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
@@ -45,7 +46,7 @@ export const HeroSection: React.FC = () => {
               className="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-charcoal leading-tight"
             >
               Painless, Modern Dental Care in{" "}
-              <span className="text-accent underline decoration-accent/30 underline-offset-8">
+              <span className="custom-highlight text-accent">
                 Vijay Nagar, Indore
               </span>
             </motion.h1>
@@ -56,7 +57,7 @@ export const HeroSection: React.FC = () => {
               transition={{ duration: 0.5, delay: 0.35 }}
               className="text-lg sm:text-xl text-charcoal-muted leading-relaxed max-w-2xl"
             >
-              Experience gentle treatment with state-of-the-art technology. From root canals to braces, book your appointment instantly online or directly through WhatsApp.
+              Led by <strong className="text-charcoal font-semibold">{DOCTOR_NAME}</strong>. From painless root canals to digital braces, reserve your appointment online in under 60 seconds or message our WhatsApp team.
             </motion.p>
 
             <motion.div
@@ -66,17 +67,13 @@ export const HeroSection: React.FC = () => {
               className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 pt-2"
             >
               <Link href="/book/smile-care-indore">
-                <Button size="lg" className="w-full sm:w-auto gap-2">
+                <Button size="lg" className="w-full sm:w-auto gap-2 text-base font-bold">
                   <Calendar className="w-5 h-5" />
                   Book Appointment
                 </Button>
               </Link>
-              <a
-                href="https://wa.me/919876543210?text=Hi%2C%20I%20would%20like%20to%20book%20an%20appointment"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <Button variant="outline" size="lg" className="w-full sm:w-auto gap-2">
+              <a href={waUrl} target="_blank" rel="noopener noreferrer">
+                <Button variant="outline" size="lg" className="w-full sm:w-auto gap-2 border-emerald-600 text-emerald-700 hover:bg-emerald-600 hover:text-white font-semibold">
                   <PhoneCall className="w-5 h-5" />
                   WhatsApp Us Live
                 </Button>
@@ -88,7 +85,7 @@ export const HeroSection: React.FC = () => {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.5, delay: 0.65 }}
-              className="flex flex-wrap items-center gap-6 text-xs sm:text-sm text-stone-500 pt-4"
+              className="flex flex-wrap items-center gap-6 text-xs sm:text-sm text-stone-600 pt-4 border-t border-stone-200/60"
             >
               <div className="flex items-center gap-2">
                 <ShieldCheck className="w-4 h-4 text-accent" />
@@ -98,61 +95,48 @@ export const HeroSection: React.FC = () => {
                 <ShieldCheck className="w-4 h-4 text-accent" />
                 <span>Instant Confirmation</span>
               </div>
-              <div className="flex items-center gap-2">
-                <ShieldCheck className="w-4 h-4 text-accent" />
-                <span>4.9★ Patient Rating</span>
+              <div className="flex items-center gap-1.5 font-bold text-charcoal">
+                <div className="flex text-amber-400">
+                  <Star className="w-4 h-4 fill-amber-400" />
+                </div>
+                <span>4.9 / 5 (500+ Reviews)</span>
               </div>
             </motion.div>
           </div>
 
-          {/* Hero Image / Visual Card */}
+          {/* Hero Photography Visual Card */}
           <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
+            initial={{ opacity: 0, scale: 0.96 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.6, delay: 0.4 }}
             className="lg:col-span-5"
           >
-            <div className="relative bg-white p-6 sm:p-8 rounded-3xl shadow-xl border border-stone-200/80 space-y-6">
-              <div className="flex items-center justify-between border-b border-stone-100 pb-4">
-                <div>
-                  <h3 className="font-bold text-lg text-charcoal">Smile Care Dental Clinic</h3>
-                  <p className="text-xs text-stone-500">Scheme 54, Vijay Nagar, Indore</p>
+            <div className="relative bg-white rounded-3xl p-3 shadow-2xl border border-stone-200">
+              <div className="relative h-64 sm:h-72 w-full rounded-2xl overflow-hidden mb-4">
+                <Image
+                  src="/images/clinic-interior.png"
+                  alt="Smile Care Dental Clinic Interior Indore"
+                  fill
+                  className="object-cover"
+                />
+                <div className="absolute top-3 right-3 px-3 py-1 bg-white/90 backdrop-blur-md rounded-full text-xs font-bold text-emerald-700 border border-emerald-200">
+                  Open Today • 10 AM - 8 PM
                 </div>
-                <span className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold bg-success-light text-success">
-                  Open Today
-                </span>
               </div>
 
-              <div className="space-y-4">
-                <div className="p-4 bg-accent-light/40 rounded-2xl border border-accent/10 flex items-start gap-3">
-                  <div className="p-2 bg-accent text-white rounded-xl">
-                    <Calendar className="w-5 h-5" />
-                  </div>
+              <div className="px-4 pb-3 space-y-3">
+                <div className="flex items-center justify-between">
                   <div>
-                    <h4 className="text-sm font-semibold text-charcoal">Automated Booking Available</h4>
-                    <p className="text-xs text-stone-600">
-                      Book online in 30 seconds or message our WhatsApp bot 24/7.
-                    </p>
+                    <h3 className="font-bold text-base text-charcoal">Smile Care Dental Clinic</h3>
+                    <p className="text-xs text-stone-500">{DOCTOR_NAME} • Senior Dental Surgeon</p>
                   </div>
-                </div>
-
-                <div className="grid grid-cols-2 gap-3 text-center">
-                  <div className="p-3 bg-stone-50 rounded-xl">
-                    <div className="text-xl font-bold text-accent">5,000+</div>
-                    <div className="text-xs text-stone-500">Patients Treated</div>
-                  </div>
-                  <div className="p-3 bg-stone-50 rounded-xl">
-                    <div className="text-xl font-bold text-accent">15+ Yrs</div>
-                    <div className="text-xs text-stone-500">Clinical Experience</div>
-                  </div>
+                  <Link href="/book/smile-care-indore">
+                    <span className="px-3 py-1.5 rounded-xl bg-accent text-white text-xs font-bold hover:bg-accent-hover transition-colors">
+                      Book Slot →
+                    </span>
+                  </Link>
                 </div>
               </div>
-
-              <Link href="/book/smile-care-indore" className="block">
-                <Button variant="secondary" className="w-full">
-                  Check Available Slots →
-                </Button>
-              </Link>
             </div>
           </motion.div>
         </div>

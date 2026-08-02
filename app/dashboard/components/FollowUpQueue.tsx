@@ -1,29 +1,26 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { HumanFollowUpFlag } from "@/types";
-import { AlertTriangle, CheckCircle, PhoneCall, Clock } from "lucide-react";
+import { AlertTriangle, CheckCircle, PhoneCall, ShieldCheck } from "lucide-react";
 
 interface FollowUpQueueProps {
   initialFlags?: HumanFollowUpFlag[];
 }
 
 export const FollowUpQueue: React.FC<FollowUpQueueProps> = ({ initialFlags = [] }) => {
-  const [flags, setFlags] = useState<HumanFollowUpFlag[]>(
-    initialFlags.length > 0
-      ? initialFlags
-      : [
-          {
-            id: "flag-1",
-            phone_number: "+91 98765 11223",
-            patient_name: "Vikram Malhotra",
-            reason: 'Medical keywords detected: "severe pain and swelling near upper molar"',
-            original_message: "Doctor I have severe pain and swelling near my upper molar since last night. Please help!",
-            status: "PENDING",
-            created_at: new Date().toISOString(),
-          },
-        ]
-  );
+  const [flags, setFlags] = useState<HumanFollowUpFlag[]>(initialFlags);
+
+  useEffect(() => {
+    fetch("/api/followups")
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.success && data.flags) {
+          setFlags(data.flags);
+        }
+      })
+      .catch((err) => console.error("Error fetching follow-up queue:", err));
+  }, []);
 
   const handleResolve = (id: string) => {
     setFlags((prev) =>
@@ -39,9 +36,13 @@ export const FollowUpQueue: React.FC<FollowUpQueueProps> = ({ initialFlags = [] 
         <div>
           <h3 className="font-bold text-lg text-charcoal flex items-center gap-2">
             <span>Human Call-Back Queue</span>
-            {pendingFlags.length > 0 && (
+            {pendingFlags.length > 0 ? (
               <span className="px-2 py-0.5 rounded-full bg-error-light text-error text-xs font-bold">
                 {pendingFlags.length} Urgent
+              </span>
+            ) : (
+              <span className="px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 text-xs font-medium">
+                All Clear
               </span>
             )}
           </h3>
@@ -51,8 +52,12 @@ export const FollowUpQueue: React.FC<FollowUpQueueProps> = ({ initialFlags = [] 
 
       <div className="space-y-3">
         {flags.length === 0 ? (
-          <div className="text-center py-8 text-stone-400 text-sm">
-            No medical follow-up flags pending.
+          <div className="text-center py-10 text-stone-400 text-sm space-y-2">
+            <ShieldCheck className="w-8 h-8 text-emerald-500 mx-auto opacity-70" />
+            <p className="font-medium text-stone-600">No medical callback flags pending.</p>
+            <p className="text-xs text-stone-400 max-w-xs mx-auto">
+              Any patient message containing pain, bleeding, or emergency keywords will automatically appear here.
+            </p>
           </div>
         ) : (
           flags.map((flag) => (

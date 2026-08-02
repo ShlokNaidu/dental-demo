@@ -4,6 +4,7 @@ import React from "react";
 import { ScrollReveal } from "@/components/animations/ScrollReveal";
 import { Card } from "@/components/ui/Card";
 import { Star, Quote } from "lucide-react";
+import { DOCTOR_NAME } from "@/lib/utils/constants";
 
 export const TestimonialsSection: React.FC = () => {
   const reviews = [
@@ -13,7 +14,7 @@ export const TestimonialsSection: React.FC = () => {
       rating: 5,
       treatment: "Root Canal Treatment",
       quote:
-        "I was terrified of getting a root canal, but Dr. and team made it completely painless. The WhatsApp booking was super quick and easy too!",
+        `I was terrified of getting a root canal, but ${DOCTOR_NAME} and her team made it completely painless. The WhatsApp booking was super quick and easy too!`,
     },
     {
       name: "Rajesh Verma",
@@ -21,7 +22,7 @@ export const TestimonialsSection: React.FC = () => {
       rating: 5,
       treatment: "Teeth Cleaning",
       quote:
-        "Clean, hygienic clinic with very polite staff. I booked my appointment online in under a minute and got immediate WhatsApp confirmation.",
+        `Clean, hygienic clinic with very polite staff. I booked my appointment online with ${DOCTOR_NAME} in under a minute and got immediate WhatsApp confirmation.`,
     },
     {
       name: "Ananya Joshi",
@@ -29,7 +30,7 @@ export const TestimonialsSection: React.FC = () => {
       rating: 5,
       treatment: "Braces Consultation",
       quote:
-        "Super transparent prices! They didn't try to upsell anything unnecessary. Great experience overall for my alignment consultation.",
+        `Super transparent prices! ${DOCTOR_NAME} didn't try to upsell anything unnecessary. Great experience overall for my alignment consultation.`,
     },
   ];
 
@@ -37,7 +38,7 @@ export const TestimonialsSection: React.FC = () => {
     <section className="py-20 bg-stone-50/50">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <ScrollReveal className="text-center max-w-2xl mx-auto mb-16 space-y-4">
-          <span className="text-sm font-semibold tracking-wider text-accent uppercase">
+          <span className="text-sm font-bold tracking-wider text-accent uppercase">
             Patient Stories
           </span>
           <h2 className="text-3xl sm:text-4xl font-extrabold text-charcoal">
@@ -51,7 +52,7 @@ export const TestimonialsSection: React.FC = () => {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {reviews.map((rev, idx) => (
             <ScrollReveal key={rev.name} delay={idx * 0.1}>
-              <Card className="h-full flex flex-col justify-between p-6">
+              <Card className="h-full flex flex-col justify-between p-6 border-stone-200">
                 <div className="space-y-4">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-1 text-amber-400">
@@ -70,7 +71,7 @@ export const TestimonialsSection: React.FC = () => {
                   <h4 className="font-bold text-charcoal text-sm">{rev.name}</h4>
                   <div className="flex items-center justify-between text-xs text-stone-500">
                     <span>{rev.location}</span>
-                    <span className="text-accent font-medium">{rev.treatment}</span>
+                    <span className="text-accent font-semibold">{rev.treatment}</span>
                   </div>
                 </div>
               </Card>

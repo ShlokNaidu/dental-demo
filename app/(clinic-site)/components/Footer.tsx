@@ -1,6 +1,6 @@
 import React from "react";
 import Link from "next/link";
-import { CLINIC_ADDRESS, CLINIC_PHONE } from "@/lib/utils/constants";
+import { CLINIC_ADDRESS, CLINIC_PHONE, DOCTOR_NAME } from "@/lib/utils/constants";
 import { Stethoscope } from "lucide-react";
 
 export const Footer: React.FC = () => {
@@ -14,11 +14,12 @@ export const Footer: React.FC = () => {
               <Stethoscope className="w-6 h-6 text-accent" />
               <span>Smile Care Dental Clinic</span>
             </div>
-            <p className="text-sm text-stone-400 max-w-md">
-              Painless, gentle, and transparent dental treatments in Vijay Nagar, Indore. Online and WhatsApp automated booking.
+            <p className="text-sm text-stone-400 max-w-md leading-relaxed">
+              Painless, gentle, and transparent dental treatments in Vijay Nagar, Indore. Led by {DOCTOR_NAME}, Senior Dental Surgeon.
             </p>
-            <div className="text-xs text-stone-500">
-              {CLINIC_ADDRESS} • {CLINIC_PHONE}
+            <div className="text-xs text-stone-400 space-y-1">
+              <div>📍 {CLINIC_ADDRESS}</div>
+              <div>📞 {CLINIC_PHONE}</div>
             </div>
           </div>
 
@@ -28,6 +29,7 @@ export const Footer: React.FC = () => {
             <ul className="space-y-2 text-sm text-stone-400">
               <li><Link href="/" className="hover:text-accent transition-colors">Home</Link></li>
               <li><Link href="#services" className="hover:text-accent transition-colors">Services & Pricing</Link></li>
+              <li><Link href="#doctor" className="hover:text-accent transition-colors">Our Dentist</Link></li>
               <li><Link href="#location" className="hover:text-accent transition-colors">Clinic Location</Link></li>
               <li><Link href="/book/smile-care-indore" className="hover:text-accent transition-colors">Book Online</Link></li>
             </ul>
@@ -53,7 +55,6 @@ export const Footer: React.FC = () => {
 
         <div className="pt-8 border-t border-stone-800 flex flex-col sm:flex-row items-center justify-between text-xs text-stone-500 gap-4">
           <p>© {new Date().getFullYear()} Smile Care Dental Clinic. All rights reserved.</p>
-          <p>Built for Indore Dental Automation Demo.</p>
         </div>
       </div>
     </footer>

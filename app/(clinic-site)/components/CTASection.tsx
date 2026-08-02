@@ -5,8 +5,14 @@ import Link from "next/link";
 import { ScrollReveal } from "@/components/animations/ScrollReveal";
 import { Button } from "@/components/ui/Button";
 import { Calendar, MessageCircle } from "lucide-react";
+import { CLINIC_PHONE } from "@/lib/utils/constants";
 
 export const CTASection: React.FC = () => {
+  const cleanPhone = CLINIC_PHONE.replace(/[^\d]/g, "");
+  const waUrl = `https://wa.me/${cleanPhone}?text=${encodeURIComponent(
+    "Hi, I want to schedule a dental appointment at Smile Care Dental Clinic"
+  )}`;
+
   return (
     <section className="py-20 bg-accent text-white relative overflow-hidden">
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-8 relative z-10">
@@ -21,17 +27,13 @@ export const CTASection: React.FC = () => {
 
         <ScrollReveal delay={0.2} className="flex flex-col sm:flex-row justify-center items-center gap-4">
           <Link href="/book/smile-care-indore">
-            <Button size="lg" className="bg-white text-accent hover:bg-stone-100 shadow-xl gap-2 font-bold">
+            <Button size="lg" className="bg-white text-accent hover:bg-stone-100 shadow-xl gap-2 font-bold text-base">
               <Calendar className="w-5 h-5" />
               Book Appointment Now
             </Button>
           </Link>
-          <a
-            href="https://wa.me/919876543210?text=Hi%2C%20I%20want%20to%20schedule%20a%20dental%20appointment"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Button variant="outline" size="lg" className="border-white text-white hover:bg-white/10 gap-2">
+          <a href={waUrl} target="_blank" rel="noopener noreferrer">
+            <Button variant="outline" size="lg" className="border-white text-white hover:bg-white/10 gap-2 text-base font-semibold">
               <MessageCircle className="w-5 h-5" />
               Chat on WhatsApp
             </Button>

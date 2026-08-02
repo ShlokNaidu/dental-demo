@@ -1,22 +1,8 @@
+@import url('https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@700,800,900&f[]=switzer@400,500,600,700&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
-@font-face {
-  font-family: 'CabinetGrotesk';
-  src: url('/fonts/CabinetGrotesk-Bold.woff2') format('woff2');
-  font-weight: 700;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Switzer';
-  src: url('/fonts/Switzer-Regular.woff2') format('woff2');
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
 
 :root {
   --background: #FAF9F6;
@@ -24,6 +10,8 @@
   --accent: #0D9488;
   --accent-hover: #0F766E;
   --accent-muted: #E6F4F1;
+  --accent-gold: #D97706;
+  --accent-gold-light: #FEF3C7;
 }
 
 body {
@@ -34,8 +22,29 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-h1, h2, h3, h4, h5, h6 {
-  font-family: 'CabinetGrotesk', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+h1, h2, h3, h4, h5, h6, .font-heading {
+  font-family: 'Cabinet Grotesk', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  letter-spacing: -0.02em;
+}
+
+/* Custom Highlight Effect for key headline words */
+.custom-highlight {
+  position: relative;
+  display: inline-block;
+  white-space: nowrap;
+}
+
+.custom-highlight::after {
+  content: '';
+  position: absolute;
+  left: -4px;
+  right: -4px;
+  bottom: 2px;
+  height: 35%;
+  background: linear-gradient(120deg, rgba(13, 148, 136, 0.25), rgba(217, 119, 6, 0.25));
+  border-radius: 4px;
+  z-index: -1;
+  transform: rotate(-1deg);
 }
 
 /* Respect user prefers-reduced-motion setting */

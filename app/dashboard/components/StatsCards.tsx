@@ -2,7 +2,7 @@
 
 import React from "react";
 import { Card } from "@/components/ui/Card";
-import { Calendar, TrendingUp, Bot, AlertTriangle, Clock } from "lucide-react";
+import { Calendar, TrendingUp, Bot, Clock } from "lucide-react";
 
 interface StatsCardsProps {
   bookingsToday?: number;
@@ -13,17 +13,17 @@ interface StatsCardsProps {
 }
 
 export const StatsCards: React.FC<StatsCardsProps> = ({
-  bookingsToday = 8,
-  bookingsThisWeek = 42,
-  botHandledCount = 124,
-  humanHandoffCount = 3,
-  avgResponseTimeSec = 1.2,
+  bookingsToday = 0,
+  bookingsThisWeek = 0,
+  botHandledCount = 0,
+  humanHandoffCount = 0,
+  avgResponseTimeSec = 0.8,
 }) => {
   const stats = [
     {
       label: "Bookings Today",
       value: bookingsToday.toString(),
-      subtext: "+25% vs yesterday",
+      subtext: bookingsToday > 0 ? `${bookingsToday} confirmed today` : "No bookings yet today",
       icon: Calendar,
       color: "text-accent",
       bgColor: "bg-accent/10",
@@ -31,7 +31,7 @@ export const StatsCards: React.FC<StatsCardsProps> = ({
     {
       label: "Bookings This Week",
       value: bookingsThisWeek.toString(),
-      subtext: "On track for record week",
+      subtext: bookingsThisWeek > 0 ? `${bookingsThisWeek} total this week` : "Week total tracking live",
       icon: TrendingUp,
       color: "text-blue-600",
       bgColor: "bg-blue-50",
@@ -39,7 +39,7 @@ export const StatsCards: React.FC<StatsCardsProps> = ({
     {
       label: "Bot vs Human Handoff",
       value: `${botHandledCount} / ${humanHandoffCount}`,
-      subtext: "97.6% automated resolution",
+      subtext: humanHandoffCount > 0 ? `${humanHandoffCount} urgent callbacks` : "0 emergency handoffs",
       icon: Bot,
       color: "text-purple-600",
       bgColor: "bg-purple-50",
@@ -47,7 +47,7 @@ export const StatsCards: React.FC<StatsCardsProps> = ({
     {
       label: "Avg Bot Latency",
       value: `${avgResponseTimeSec}s`,
-      subtext: "Instant WhatsApp reply",
+      subtext: "Instant automated reply",
       icon: Clock,
       color: "text-emerald-600",
       bgColor: "bg-emerald-50",
